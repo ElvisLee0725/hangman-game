@@ -1,0 +1,21 @@
+{
+  "name": "hangman-game",
+  "version": "1.0.0",
+  "description": "A hangman game with questions stored in mongodb",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server/server"
+  },
+  "author": "Elvis Lee",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.3",
+    "express": "^4.17.1",
+    "express-validator": "^6.9.2",
+    "mongoose": "^5.11.13"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.7"
+  }
+}
