@@ -4,10 +4,25 @@ const { check, validationResult } = require('express-validator');
 const Question = require('../../models/Question');
 
 // @route   GET api/questions
-// @desc    Get a question from database
+// @desc    Get a random question from database by difficulty
 // @access  Public
-router.get('/', (req, res) => {
-  res.send('Get a question!');
+router.get('/', async (req, res) => {
+  const { difficulty } = req.body;
+  try {
+    const numOfQuestions = await Question.countDocuments({ difficulty });
+    
+    if(numOfQuestions === 0) {
+      return res.status(404).json({ errors: [{ msg: 'Could not find a question with this difficulty' }]});
+    }
+    
+    const random = Math.floor(Math.random() * numOfQuestions);
+    // skip() The number of documents to skip. 
+    const q = await Question.findOne({ difficulty }).skip(random);
+
+    res.send(q); 
+  } catch (error) {
+    res.status(500).send('Server Error');
+  }
 });
 
 // @route   POST api/questions
@@ -33,7 +48,7 @@ router.post('/', [
     }
 
     q = new Question({
-      question,
+      question: question.toLowerCase(),
       difficulty
     });
 
