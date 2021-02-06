@@ -4,7 +4,10 @@
   "description": "A hangman game with questions stored in mongodb",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon server/server"
+    "start": "node server",
+    "server": "nodemon server/server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Elvis Lee",
   "license": "ISC",
