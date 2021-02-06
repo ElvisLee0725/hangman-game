@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
+import { Container } from 'react-bootstrap';
 
 const Landing = () => {
   return (
-    <div>
-      <h1>Welcome to my hangman game</h1>
-    </div>
+    <Container>
+      <h1>Hello! Welcome to play this game!</h1>
+    </Container>
   )
 }
 
