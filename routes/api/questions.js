@@ -3,11 +3,12 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const Question = require('../../models/Question');
 
-// @route   GET api/questions
-// @desc    Get a random question from database by difficulty
+// @route   GET api/questions/:difficulty
+// @desc    Get a random question from database with according to its difficulty
 // @access  Public
-router.get('/', async (req, res) => {
-  const { difficulty } = req.body;
+router.get('/:difficulty', async (req, res) => {
+  const { difficulty } = req.params;
+
   try {
     const numOfQuestions = await Question.countDocuments({ difficulty });
     
@@ -25,10 +26,10 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   POST api/questions
+// @route   POST api/questions/add-question
 // @desc    Add a new question into database
 // @access  Public
-router.post('/', [
+router.post('/add-question', [
   check('question', 'Question is required').not().isEmpty(), 
   check('question', 'Question must has length over 10 characters').isLength({ min: 10 }), 
   check('difficulty', 'Please include the difficulty of this question').not().isEmpty()
