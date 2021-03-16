@@ -1,6 +1,7 @@
-import React, { useEffect }from 'react';
+import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
+import Difficulty from './Difficulty';
 
 const Landing = () => {
   useEffect(() => {
@@ -18,6 +19,7 @@ const Landing = () => {
   return (
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
+      <Difficulty />
     </Container>
   )
 }
