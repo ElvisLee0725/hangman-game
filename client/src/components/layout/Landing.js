@@ -10,7 +10,7 @@ const Landing = () => {
       try {
         const res = await axios.get('/api/questions/easy');
         console.log(res.data);
-        setOriginalQuestion(res.data.question.toUpperCase());
+
         processWord(res.data.question, new Set());
       } catch (error) {
         console.error(error);
@@ -19,7 +19,6 @@ const Landing = () => {
     fetchQuestion();
   }, []);
 
-  const [originalQuestion, setOriginalQuestion] = useState("");
   const [wordGuess, setWordGuess] = useState("");
 
   const processWord = (word, charGuessed) => {
@@ -32,7 +31,7 @@ const Landing = () => {
         tmp += ' ';
       }
       else {
-        tmp += '*';
+        tmp += word.charAt(i);
       }
     }
     setWordGuess(tmp);
