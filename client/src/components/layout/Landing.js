@@ -5,45 +5,36 @@ import Difficulty from './Difficulty';
 import Question from './Question';
 
 const Landing = () => {
-  useEffect(() => {
-    async function fetchQuestion() {
-      try {
-        const res = await axios.get('/api/questions/easy');
-        console.log(res.data);
+  
+  const [puzzle, setPuzzle] = useState('');
+  const [guessedLetters, setGuessedLetters] = useState([]);
 
-        processWord(res.data.question, new Set());
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  const fetchQuestion = () => {
+      axios.get('/api/questions/easy').then((res) => {
+      console.log(res.data.question);
+
+      setPuzzle(res.data.question.toLowerCase());
+      setGuessedLetters([]);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  useEffect(() => {
     fetchQuestion();
   }, []);
 
-  const [wordGuess, setWordGuess] = useState("");
-
-  const processWord = (word, charGuessed) => {
-    let tmp = "";
-    for(let i = 0; i < word.length; i++) {
-      if(charGuessed.has(word.charAt(i))) {
-        tmp += word.charAt(i);
-      }
-      else if(word.charAt(i) === ' ') {
-        tmp += ' ';
-      }
-      else {
-        tmp += word.charAt(i);
-      }
-    }
-    setWordGuess(tmp);
-  }
+  
+  //const [numCanGuess, setNumCanGuess] = useState(9);
 
   return (
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
       <Difficulty />
-      <Question question={wordGuess}/>
+      <Question puzzle={puzzle} guessedLetters={guessedLetters} setGuessedLetters={setGuessedLetters}/>
     </Container>
-  )
+  );
 }
 
 export default Landing;
