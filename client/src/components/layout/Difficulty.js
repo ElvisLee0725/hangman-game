@@ -26,7 +26,7 @@ const Difficulty = () => {
               <Card.Body className="text-center">
                 <Card.Title>{level.title}</Card.Title>
                 <Card.Text className="text-justify">{level.desc}</Card.Text>
-                <Button variant="outline-primary">Play</Button>
+                <Button className="btn-primary-color">Play</Button>
               </Card.Body>
             </Card>
           </Col>
