@@ -7,14 +7,16 @@ import Question from './Question';
 const Landing = () => {
   
   const [puzzle, setPuzzle] = useState('');
-  const [guessedLetters, setGuessedLetters] = useState([]);
+  const [guessLeft, setGuessLeft] = useState(5);
+  const [gameStatus, setGameStatus] = useState('');
 
   const fetchQuestion = () => {
       axios.get('/api/questions/easy').then((res) => {
       console.log(res.data.question);
 
       setPuzzle(res.data.question.toLowerCase());
-      setGuessedLetters([]);
+      setGuessLeft(5);
+      setGameStatus('playing');
     })
     .catch((error) => {
       console.log(error);
@@ -25,14 +27,11 @@ const Landing = () => {
     fetchQuestion();
   }, []);
 
-  
-  //const [numCanGuess, setNumCanGuess] = useState(9);
-
   return (
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
       <Difficulty />
-      <Question puzzle={puzzle} guessedLetters={guessedLetters} setGuessedLetters={setGuessedLetters}/>
+      <Question puzzle={puzzle} guessLeft={guessLeft} setGuessLeft={setGuessLeft} gameStatus={gameStatus} setGameStatus={setGameStatus}/>
     </Container>
   );
 }
