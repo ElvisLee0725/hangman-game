@@ -9,6 +9,7 @@ const Landing = () => {
   const [puzzle, setPuzzle] = useState('');
   const [guessLeft, setGuessLeft] = useState(5);
   const [gameStatus, setGameStatus] = useState('');
+  const [guessedLetters, setGuessedLetters] = useState([]);
 
   const fetchQuestion = () => {
       axios.get('/api/questions/easy').then((res) => {
@@ -16,6 +17,7 @@ const Landing = () => {
 
       setPuzzle(res.data.question.toLowerCase());
       setGuessLeft(5);
+      setGuessedLetters([]);
       setGameStatus('playing');
     })
     .catch((error) => {
@@ -23,15 +25,46 @@ const Landing = () => {
     });
   }
 
+  const makeGuess = (e) => {
+    if(gameStatus !== 'playing') {
+      return ;
+    }
+    const ch = e.key;
+
+    // Made a repeat guess, return 
+    if(guessedLetters.includes(ch)) {
+      console.log(`This letter ${ch} is guessed`);
+      return ;
+    }
+    let guessRight = puzzle.includes(ch);
+    
+    if(guessRight) {
+      setGuessedLetters((prevArr) => [...prevArr, ch]);
+    }
+    else {
+      setGuessLeft((prevState) => {
+          return prevState - 1;
+        });
+    }
+  }
+
   useEffect(() => {
     fetchQuestion();
   }, []);
+  
+  useEffect(() => {
+    window.addEventListener('keypress', makeGuess);
+
+    return () => {
+      window.removeEventListener('keypress', makeGuess);
+    }
+  }, [puzzle, gameStatus, guessedLetters]);
 
   return (
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
       <Difficulty />
-      <Question puzzle={puzzle} guessLeft={guessLeft} setGuessLeft={setGuessLeft} gameStatus={gameStatus} setGameStatus={setGameStatus}/>
+      <Question puzzle={puzzle} guessLeft={guessLeft} guessedLetters={guessedLetters} gameStatus={gameStatus} setGameStatus={setGameStatus}/>
     </Container>
   );
 }
