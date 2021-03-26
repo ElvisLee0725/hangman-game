@@ -13,12 +13,28 @@ const Landing = () => {
   const [message, setMessage] = useState('');
   const [guessedLetters, setGuessedLetters] = useState([]);
 
-  const fetchQuestion = () => {
-      axios.get('/api/questions/easy').then((res) => {
+  const fetchQuestion = (puzzleType = 'easy') => {
+      axios.get(`/api/questions/${puzzleType}`).then((res) => {
       console.log(res.data.question);
 
+      switch(puzzleType) {
+        case 'easy':
+          setGuessLeft(7);
+          break;
+
+        case 'medium':
+          setGuessLeft(5);
+          break;
+        
+        case 'hard':
+          setGuessLeft(3);
+          break;
+
+        default:
+          break;
+      }
+
       setPuzzle(res.data.question.toLowerCase());
-      setGuessLeft(5);
       setGuessedLetters([]);
       setGameStatus('playing');
       setMessage('Game starts!');
@@ -68,7 +84,7 @@ const Landing = () => {
   return (
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
-      <Difficulty />
+      <Difficulty fetchQuestion={fetchQuestion} />
       <Question puzzle={puzzle} guessLeft={guessLeft} guessedLetters={guessedLetters} setGameStatus={setGameStatus} setMessage={setMessage} />
       <Message message={message} />
     </Container>

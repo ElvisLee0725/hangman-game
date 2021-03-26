@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 
-const Difficulty = () => {
+const Difficulty = ({ fetchQuestion }) => {
 
   const gameLevel = [
     {
       title: "Easy",
-      desc: "In this mode you can fail up to 9 times with a fairly easy question."
+      desc: "In this mode you can fail up to 7 times with a fairly easy question."
     },
     {
       title: "Medium",
@@ -26,7 +26,7 @@ const Difficulty = () => {
               <Card.Body className="text-center">
                 <Card.Title>{level.title}</Card.Title>
                 <Card.Text className="text-justify">{level.desc}</Card.Text>
-                <Button className="btn-primary-color">Play</Button>
+                <Button className="btn-primary-color" onClick={() => fetchQuestion(level.title.charAt(0).toLowerCase() + level.title.slice(1))}>Play</Button>
               </Card.Body>
             </Card>
           </Col>

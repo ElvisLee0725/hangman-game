@@ -25,7 +25,7 @@ const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage
     // Check if run out of guess
     if(guessLeft === 0) {
       setGameStatus('gameover');
-      setMessage(`Sorry, the answer is ${puzzle}. Let's play again!`);
+      setMessage(`Sorry, the answer is '${puzzle.toUpperCase()}'. Let's play again!`);
     }
   }, [puzzle, questionArr, guessLeft]);
    
