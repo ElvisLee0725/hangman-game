@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from 'react';
 
-const Question = ({ puzzle, guessLeft, guessedLetters, gameStatus, setGameStatus }) => {
+const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage }) => {
   
   let questionArr = [];
   if(puzzle) {
@@ -13,29 +13,25 @@ const Question = ({ puzzle, guessLeft, guessedLetters, gameStatus, setGameStatus
       }
       return '*';
     });
-    
-    if(gameStatus === 'gameover') {
-      // Show the puzzle when the game is over
-      console.log('Game Over');
-    }
   }
 
   useEffect(() => {
     // Check if all characters are guessed
     if(puzzle && !questionArr.includes('*')) {
       setGameStatus('winner');
-      console.log('We have a winner');
+      setMessage('You got the answer! Great job!');
     }
 
     // Check if run out of guess
     if(guessLeft === 0) {
       setGameStatus('gameover');
+      setMessage(`Sorry, the answer is ${puzzle}. Let's play again!`);
     }
   }, [puzzle, questionArr, guessLeft]);
    
   return (
     <Fragment>
-      <div className="text-center my-5">
+      <div className="text-center mt-5 mb-3">
         <div className="questionArea">
           { questionArr.map((ch, idx) => <span key={idx}>{ch}</span>) }
         </div> 
