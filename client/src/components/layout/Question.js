@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from 'react';
 
-const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage }) => {
+const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage, onShow }) => {
   
   let questionArr = [];
   if(puzzle) {
@@ -20,6 +20,7 @@ const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage
     if(puzzle && !questionArr.includes('*')) {
       setGameStatus('winner');
       setMessage('You got the answer! Great job!');
+      onShow();
     }
 
     // Check if run out of guess

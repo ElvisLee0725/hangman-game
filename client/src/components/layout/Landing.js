@@ -4,6 +4,7 @@ import axios from 'axios';
 import Difficulty from './Difficulty';
 import Question from './Question';
 import Message from './Message';
+import WinnerModal from './WinnerModal';
 
 const Landing = () => {
   
@@ -12,6 +13,7 @@ const Landing = () => {
   const [gameStatus, setGameStatus] = useState('');
   const [message, setMessage] = useState('');
   const [guessedLetters, setGuessedLetters] = useState([]);
+  const [winnerModalShow, setWinnerModalShow] = useState(true);
 
   const fetchQuestion = (puzzleType = 'easy') => {
       axios.get(`/api/questions/${puzzleType}`).then((res) => {
@@ -85,8 +87,9 @@ const Landing = () => {
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
       <Difficulty fetchQuestion={fetchQuestion} />
-      <Question puzzle={puzzle} guessLeft={guessLeft} guessedLetters={guessedLetters} setGameStatus={setGameStatus} setMessage={setMessage} />
+      <Question puzzle={puzzle} guessLeft={guessLeft} guessedLetters={guessedLetters} setGameStatus={setGameStatus} setMessage={setMessage} onShow={() => setWinnerModalShow(true)}/>
       <Message message={message} />
+      <WinnerModal show={winnerModalShow} onHide={() => setWinnerModalShow(false)}/>
     </Container>
   );
 }
