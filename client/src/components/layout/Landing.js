@@ -13,7 +13,7 @@ const Landing = () => {
   const [gameStatus, setGameStatus] = useState('');
   const [message, setMessage] = useState('');
   const [guessedLetters, setGuessedLetters] = useState([]);
-  const [winnerModalShow, setWinnerModalShow] = useState(true);
+  const [winnerModalShow, setWinnerModalShow] = useState(false);
 
   const fetchQuestion = (puzzleType = 'easy') => {
       axios.get(`/api/questions/${puzzleType}`).then((res) => {
@@ -78,6 +78,11 @@ const Landing = () => {
   useEffect(() => {
     window.addEventListener('keypress', makeGuess);
 
+    // Show Modal when game is over
+    if(gameStatus === 'winner') {
+      setWinnerModalShow(true);
+    }
+
     return () => {
       window.removeEventListener('keypress', makeGuess);
     }
@@ -87,7 +92,7 @@ const Landing = () => {
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
       <Difficulty fetchQuestion={fetchQuestion} />
-      <Question puzzle={puzzle} guessLeft={guessLeft} guessedLetters={guessedLetters} setGameStatus={setGameStatus} setMessage={setMessage} onShow={() => setWinnerModalShow(true)}/>
+      <Question puzzle={puzzle} guessLeft={guessLeft} guessedLetters={guessedLetters} setGameStatus={setGameStatus} setMessage={setMessage} />
       <Message message={message} />
       <WinnerModal show={winnerModalShow} onHide={() => setWinnerModalShow(false)}/>
     </Container>
