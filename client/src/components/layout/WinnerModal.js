@@ -4,7 +4,8 @@ import { Modal, Button } from 'react-bootstrap';
 const WinnerModal = (props) => {
 
   return (
-    <Modal {...props} centered>
+    // Use animation={false} to remove Warning:findDOMNode is deprecated in StrictMode. However, modal loses animation
+    <Modal {...props} animation={false} centered>
       <Modal.Header closeButton>
         <Modal.Title>You got the answer!</Modal.Title>
       </Modal.Header>
