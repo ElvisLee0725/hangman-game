@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from 'react';
 
-const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage }) => {
+const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage, gameStatus }) => {
   
   let questionArr = [];
   if(puzzle) {
@@ -17,13 +17,14 @@ const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage
 
   useEffect(() => {
     // Check if all characters are guessed
-    if(puzzle && !questionArr.includes('*')) {
+    if(gameStatus === 'playing' && puzzle && questionArr.length > 0 && !questionArr.includes('*')) {
+      console.log('Question Array: ', questionArr);
       setGameStatus('winner');
       setMessage('You got the answer! Great job!');
     }
 
     // Check if run out of guess
-    if(guessLeft === 0) {
+    if(gameStatus === 'playing' && guessLeft === 0) {
       setGameStatus('gameover');
       setMessage(`Sorry, the answer is '${puzzle.toUpperCase()}'. Let's play again!`);
     }
