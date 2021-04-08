@@ -97,7 +97,7 @@ const Landing = () => {
     return () => {
       window.removeEventListener('keypress', makeGuess);
     }
-  }, [puzzle, guessedLetters, gameStatus]);
+  }, [puzzle, guessedLetters, gameStatus, makeGuess]);
 
   // Update Question Array to display when Guessed Letter array is updated
   useEffect(() => {
@@ -110,12 +110,12 @@ const Landing = () => {
         }
         return '*';
       }));
-  }, [guessedLetters])
+  }, [puzzle, guessedLetters])
 
   // Change game status when the user guessed all letters, or used up all guesses
   useEffect(() => {
     // Check if all characters are guessed
-    if(gameStatus === 'playing' && questionArr.length > 0 && !questionArr.includes('*')) {
+    if(gameStatus === 'playing' && !questionArr.includes('*')) {
       setGameStatus('winner');
       setMessage('You got the answer! Great job!');
     }
@@ -125,17 +125,17 @@ const Landing = () => {
       setGameStatus('gameover');
       setMessage(`Sorry, the answer is '${puzzle.toUpperCase()}'. Let's play again!`);
     }
-  }, [questionArr, guessLeft]);
+  }, [questionArr, guessLeft, gameStatus, puzzle]);
 
   // Calculate scores when the user wins, then show modal with score
   useEffect(() => {
-  if(gameStatus === 'winner') {
+  if(gameStatus === 'winner' && guessedLetters.length > 0) {
     // 1 character with 5 scores, 1 guess left with 10 scores, multiply by the difficulty of puzzle
     winnerScore.current = (puzzle.replace(/\s/g, '').length * 5 + guessLeft * 10) * diffMulti.current;
     console.log('Got winner');
     setWinnerModalShow(true);
   }
-}, [gameStatus]);
+}, [gameStatus, guessLeft]);
 
   return (
     <Container>
