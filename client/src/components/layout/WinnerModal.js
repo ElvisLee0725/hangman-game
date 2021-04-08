@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 const WinnerModal = (props) => {
-
+  
   return (
     // Use animation={false} to remove Warning:findDOMNode is deprecated in StrictMode. However, modal loses animation
     <Modal {...props} animation={false} centered>
@@ -10,7 +10,7 @@ const WinnerModal = (props) => {
         <Modal.Title>You got the answer!</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Your total score: 342</h4>
+        <h4>Your total score: {props.score}</h4>
         <label>
           Enter your name:
           <input></input>
