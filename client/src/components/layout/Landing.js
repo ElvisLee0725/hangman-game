@@ -14,15 +14,16 @@ const Landing = () => {
   const [message, setMessage] = useState('');
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [winnerModalShow, setWinnerModalShow] = useState(false);
+  const [questionArr, setQuestionArr] = useState([]);
   const winnerScore = useRef(0);
   const diffMulti = useRef(1);
 
-  console.log('render');
+  //console.log('render');
 
   const fetchQuestion = (puzzleType = 'easy') => {
     axios.get(`/api/questions/${puzzleType}`).then((res) => {
       console.log(res.data.question);
-      setGameStatus('playing');
+      
       switch(puzzleType) {
         case 'easy':
           setGuessLeft(7);
@@ -42,8 +43,11 @@ const Landing = () => {
         default:
           break;
       }
-      
-      setPuzzle(res.data.question.toLowerCase());
+
+      const newPuzzle = res.data.question.toLowerCase();
+
+      setQuestionArr(newPuzzle.split('').map((ch) => ch === ' ' ? ' ' : '*'));
+      setPuzzle(newPuzzle);
       setGuessedLetters([]);
       setMessage('Game starts!');
     })
@@ -51,6 +55,16 @@ const Landing = () => {
       console.log(error);
     });
   }
+
+  useEffect(() => {
+    fetchQuestion();
+  }, []);
+
+  useEffect(() => {
+    if(guessedLetters.length === 0 && questionArr.length > 0) {
+      setGameStatus('playing');
+    }
+  }, [guessedLetters, questionArr]);
 
   const makeGuess = (e) => {
     if(gameStatus !== 'playing') {
@@ -76,39 +90,58 @@ const Landing = () => {
       setMessage(`'${ch.toUpperCase()}' is not in the puzzle, try another!`);
     }
   }
-
-  useEffect(() => {
-    if(winnerModalShow && gameStatus === 'winner') {
-      console.log('stop the game');
-      setGameStatus('game-stop');
-    }
-  }, [winnerModalShow]);
-
-  useEffect(() => {
-    fetchQuestion();
-  }, []);
   
   useEffect(() => {
     window.addEventListener('keypress', makeGuess);
 
-    // Calculate scores when the user wins, then show modal with score
-    if(gameStatus === 'winner') {
-      // 1 character with 5 scores, 1 guess left with 10 scores, multiply by the difficulty of puzzle
-      winnerScore.current = (puzzle.replace(/\s/g, '').length * 5 + guessLeft * 10) * diffMulti.current;
-      console.log('Got winner');
-      setWinnerModalShow(true);
-    }
-
     return () => {
       window.removeEventListener('keypress', makeGuess);
     }
-  }, [puzzle, gameStatus, guessedLetters]);
+  }, [puzzle, guessedLetters, gameStatus]);
+
+  // Update Question Array to display when Guessed Letter array is updated
+  useEffect(() => {
+    setQuestionArr(puzzle.split('').map((ch) => {
+        if(guessedLetters.includes(ch)) {
+          return ch;
+        }
+        else if(ch ===  ' ') {
+          return ' ';
+        }
+        return '*';
+      }));
+  }, [guessedLetters])
+
+  // Change game status when the user guessed all letters, or used up all guesses
+  useEffect(() => {
+    // Check if all characters are guessed
+    if(gameStatus === 'playing' && questionArr.length > 0 && !questionArr.includes('*')) {
+      setGameStatus('winner');
+      setMessage('You got the answer! Great job!');
+    }
+
+    // Check if run out of guess
+    if(gameStatus === 'playing' && guessLeft === 0) {
+      setGameStatus('gameover');
+      setMessage(`Sorry, the answer is '${puzzle.toUpperCase()}'. Let's play again!`);
+    }
+  }, [questionArr, guessLeft]);
+
+  // Calculate scores when the user wins, then show modal with score
+  useEffect(() => {
+  if(gameStatus === 'winner') {
+    // 1 character with 5 scores, 1 guess left with 10 scores, multiply by the difficulty of puzzle
+    winnerScore.current = (puzzle.replace(/\s/g, '').length * 5 + guessLeft * 10) * diffMulti.current;
+    console.log('Got winner');
+    setWinnerModalShow(true);
+  }
+}, [gameStatus]);
 
   return (
     <Container>
       <h1>Hello! Welcome to play this game!</h1>
       <Difficulty fetchQuestion={fetchQuestion} />
-      <Question puzzle={puzzle} guessLeft={guessLeft} guessedLetters={guessedLetters} setGameStatus={setGameStatus} setMessage={setMessage} gameStatus={gameStatus}/>
+      <Question questionArr={questionArr} guessLeft={guessLeft} />
       <Message message={message} />
       <WinnerModal show={winnerModalShow} onHide={() => setWinnerModalShow(false)} score={winnerScore.current}/>
     </Container>

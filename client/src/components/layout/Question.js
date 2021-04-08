@@ -1,7 +1,8 @@
 import React, { useEffect, Fragment } from 'react';
 
-const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage, gameStatus }) => {
+const Question = ({ questionArr, guessLeft }) => {
   
+  /*
   let questionArr = [];
   if(puzzle) {
     questionArr = puzzle.split('').map((ch) => {
@@ -29,7 +30,7 @@ const Question = ({ puzzle, guessLeft, guessedLetters, setGameStatus, setMessage
       setMessage(`Sorry, the answer is '${puzzle.toUpperCase()}'. Let's play again!`);
     }
   }, [puzzle, questionArr, guessLeft]);
-   
+   */
   return (
     <Fragment>
       <div className="text-center mt-5 mb-3">
