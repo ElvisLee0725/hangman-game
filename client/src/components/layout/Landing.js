@@ -66,38 +66,38 @@ const Landing = () => {
     }
   }, [guessedLetters, questionArr]);
 
-  const makeGuess = (e) => {
-    if(gameStatus !== 'playing') {
-      return ;
-    }
-    const ch = e.key;
-
-    // Made a repeat guess, return 
-    if(guessedLetters.includes(ch)) {
-      setMessage(`This letter '${ch.toUpperCase()}' has been guessed.`);
-      return ;
-    }
-    let guessRight = puzzle.includes(ch);
-    
-    if(guessRight) {
-      setGuessedLetters((prevArr) => [...prevArr, ch]);
-      setMessage(`Correct! You got the letter '${ch.toUpperCase()}'.`);
-    }
-    else {
-      setGuessLeft((prevState) => {
-          return prevState - 1;
-        });
-      setMessage(`'${ch.toUpperCase()}' is not in the puzzle, try another!`);
-    }
-  }
   
   useEffect(() => {
+    const makeGuess = (e) => {
+      if(gameStatus !== 'playing') {
+        return ;
+      }
+      const ch = e.key.toLowerCase();
+  
+      // Made a repeat guess, return 
+      if(guessedLetters.includes(ch)) {
+        setMessage(`This letter '${ch.toUpperCase()}' has been guessed.`);
+        return ;
+      }
+      let guessRight = puzzle.includes(ch);
+      
+      if(guessRight) {
+        setGuessedLetters((prevArr) => [...prevArr, ch]);
+        setMessage(`Correct! You got the letter '${ch.toUpperCase()}'.`);
+      }
+      else {
+        setGuessLeft((prevState) => {
+            return prevState - 1;
+          });
+        setMessage(`'${ch.toUpperCase()}' is not in the puzzle, try another!`);
+      }
+    }
     window.addEventListener('keypress', makeGuess);
 
     return () => {
       window.removeEventListener('keypress', makeGuess);
     }
-  }, [puzzle, guessedLetters, gameStatus, makeGuess]);
+  }, [puzzle, guessedLetters, gameStatus]);
 
   // Update Question Array to display when Guessed Letter array is updated
   useEffect(() => {
@@ -129,13 +129,18 @@ const Landing = () => {
 
   // Calculate scores when the user wins, then show modal with score
   useEffect(() => {
-  if(gameStatus === 'winner' && guessedLetters.length > 0) {
+  if(gameStatus === 'winner') {
     // 1 character with 5 scores, 1 guess left with 10 scores, multiply by the difficulty of puzzle
     winnerScore.current = (puzzle.replace(/\s/g, '').length * 5 + guessLeft * 10) * diffMulti.current;
-    console.log('Got winner');
     setWinnerModalShow(true);
   }
-}, [gameStatus, guessLeft]);
+}, [gameStatus, guessLeft, puzzle]);
+
+  const closeModal = () => {
+    setWinnerModalShow(false);
+    // Set game status to 'pending' when modal close. So it won't pop up before next game starts
+    setGameStatus('pending');
+  }
 
   return (
     <Container>
@@ -143,7 +148,7 @@ const Landing = () => {
       <Difficulty fetchQuestion={fetchQuestion} />
       <Question questionArr={questionArr} guessLeft={guessLeft} />
       <Message message={message} />
-      <WinnerModal show={winnerModalShow} onHide={() => setWinnerModalShow(false)} score={winnerScore.current}/>
+      <WinnerModal show={winnerModalShow} onHide={() => closeModal()} score={winnerScore.current}/>
     </Container>
   );
 }
