@@ -22,8 +22,6 @@ const Landing = () => {
 
   const fetchQuestion = (puzzleType = 'easy') => {
     axios.get(`/api/questions/${puzzleType}`).then((res) => {
-      console.log(res.data.question);
-      
       switch(puzzleType) {
         case 'easy':
           setGuessLeft(7);
@@ -72,14 +70,23 @@ const Landing = () => {
       if(gameStatus !== 'playing') {
         return ;
       }
-      const ch = e.key.toLowerCase();
+      let ch = e.key;
+
+      // Check if the input not alphabetic or the Enter key
+      if(ch.toLowerCase() === ch.toUpperCase() || ch === 'Enter') {
+        setMessage('Please enter English alphabet only.');
+        return ;
+      }
+
+      ch = ch.toLowerCase();
   
       // Made a repeat guess, return 
       if(guessedLetters.includes(ch)) {
         setMessage(`This letter '${ch.toUpperCase()}' has been guessed.`);
         return ;
       }
-      let guessRight = puzzle.includes(ch);
+
+      const guessRight = puzzle.includes(ch);
       
       if(guessRight) {
         setGuessedLetters((prevArr) => [...prevArr, ch]);
@@ -144,7 +151,7 @@ const Landing = () => {
 
   return (
     <Container>
-      <h1>Hello! Welcome to play this game!</h1>
+      <h1 className='my-4 text-center'>Hello! Welcome to play this game!</h1>
       <Difficulty fetchQuestion={fetchQuestion} />
       <Question questionArr={questionArr} guessLeft={guessLeft} />
       <Message message={message} />

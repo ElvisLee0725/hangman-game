@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 
 const Difficulty = ({ fetchQuestion }) => {
-
   const gameLevel = [
     {
       title: "Easy",
