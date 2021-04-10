@@ -37,6 +37,15 @@
   color: var(--primary-color);
 }
 
+.table-header th {
+  background-color: var(--primary-color);
+  border-top: none !important;
+}
+
+.table-text {
+  color: var(--primary-color);
+}
+
 .App {
   text-align: center;
 }
