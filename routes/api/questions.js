@@ -20,16 +20,16 @@ router.get('/:difficulty', async (req, res) => {
     // skip() The number of documents to skip. 
     const q = await Question.findOne({ difficulty }).skip(random);
 
-    res.send(q); 
+    res.json(q); 
   } catch (error) {
     res.status(500).send('Server Error');
   }
 });
 
-// @route   POST api/questions/add-question
+// @route   POST api/questions/
 // @desc    Add a new question into database
 // @access  Public
-router.post('/add-question', [
+router.post('/', [
   check('question', 'Question is required').not().isEmpty(), 
   check('question', 'Question must has length over 10 characters').isLength({ min: 10 }), 
   check('difficulty', 'Please include the difficulty of this question').not().isEmpty()
@@ -56,7 +56,7 @@ router.post('/add-question', [
     // Save question into MongoDB
     await q.save();
 
-    res.send('post a question!');
+    res.json(q);
   } catch (error) {
     consoloe.error(error);
     res.status(500).send('Server error');
