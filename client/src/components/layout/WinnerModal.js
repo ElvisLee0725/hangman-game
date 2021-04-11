@@ -1,8 +1,29 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 
 const WinnerModal = (props) => {
   const [playerName, setPlayerName] = useState('');
+
+  const saveScore = async () => {
+    const body = {
+      name: playerName,
+      score: props.score
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    try {
+      await axios.post('/api/scores', JSON.stringify(body), config);
+      props.onHide();
+    } catch(error) {
+      console.log(error);
+    }
+  }
 
   return (
     // Use animation={false} to remove Warning:findDOMNode is deprecated in StrictMode. However, modal loses animation
@@ -23,7 +44,7 @@ const WinnerModal = (props) => {
           </Form.Group>
           <div className="save-name-buttons">
             <Button variant="secondary" onClick={props.onHide} className="mr-2">Close</Button>
-            <Button variant="primary" onClick={props.onHide}>Save</Button>
+            <Button variant="primary" onClick={() => saveScore()}>Save</Button>
           </div>
         </Form>
       </Modal.Body>

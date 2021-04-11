@@ -8,7 +8,6 @@ const TopScores = () => {
   const fetchScores = async () => {
     try {
       const scores = await axios.get('/api/scores');
-      console.log(scores.data);
       setTopScores([...scores.data]);
     } catch(error) {
       console.log(error);
