@@ -37,6 +37,12 @@
   color: var(--primary-color);
 }
 
+.save-name-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .table-header th {
   background-color: var(--primary-color);
   border-top: none !important;
