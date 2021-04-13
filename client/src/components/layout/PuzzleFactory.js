@@ -49,6 +49,7 @@ const PuzzleFactory = () => {
 
   return (
     <div className='d-flex justify-content-center align-items-center vh-100 flex-column'>
+      <p>Think of a word, phrase or sentence. Proper nouns or slangs are not allowed.</p>
       <Form onSubmit={handleSubmit}>
         <Form.Group as={Row} controlId='formPuzzle'>
           <Form.Label column sm={3}>Puzzle: </Form.Label>
