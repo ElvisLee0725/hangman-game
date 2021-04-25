@@ -18,7 +18,7 @@ const Difficulty = ({ fetchQuestion }) => {
   ];
   return (
     <Fragment>
-      <Row>
+      <Row className="mt-5">
         { gameLevel.map((level) => (
           <Col xs="12" sm="4" key={level.title} >
             <Card>

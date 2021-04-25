@@ -137,7 +137,7 @@ const Landing = () => {
   useEffect(() => {
   if(gameStatus === 'winner') {
     // 1 character with 5 scores, 1 guess left with 10 scores, multiply by the difficulty of puzzle
-    winnerScore.current = (puzzle.replace(/\s/g, '').length * 5 + (totalGuess - missedGuesses.length) * 10) * diffMulti.current;
+    winnerScore.current = (puzzle.replace(/\s/g, '').length * 5 + (totalGuess.current - missedGuesses.length) * 10) * diffMulti.current;
     setWinnerModalShow(true);
   }
 }, [gameStatus, missedGuesses, puzzle]);
@@ -150,9 +150,8 @@ const Landing = () => {
 
   return (
     <Container>
-      <h1 className='my-4 text-center'>Hello! Welcome to play this game!</h1>
       <Difficulty fetchQuestion={fetchQuestion} />
-      <Question questionArr={questionArr} guessLeft={totalGuess - missedGuesses.length} missedGuesses={missedGuesses}/>
+      <Question questionArr={questionArr} guessLeft={totalGuess.current - missedGuesses.length} missedGuesses={missedGuesses}/>
       <Message message={message} />
       <WinnerModal show={winnerModalShow} onHide={() => closeModal()} score={winnerScore.current}/>
     </Container>
