@@ -4,7 +4,7 @@
   "description": "A hangman game with questions stored in mongodb",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
+    "start": "NODE_ENV=production node server/server.js",
     "build": "react-scripts build",
     "server": "nodemon server/server",
     "client": "npm start --prefix client",
