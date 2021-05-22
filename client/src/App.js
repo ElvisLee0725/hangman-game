@@ -6,6 +6,7 @@ import TopScores from './components/layout/TopScores';
 import PuzzleFactory from './components/layout/PuzzleFactory';
 import Navigation from './components/layout/Navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NotFound from './components/404';
 
 const App = () => {
   
@@ -17,6 +18,7 @@ const App = () => {
           <Route exact path='/' component={Landing}/>
           <Route exact path='/scores' component={TopScores} />
           <Route exact path='/admin-only' component={PuzzleFactory} />
+          <Route component={NotFound} />
         </Switch>
       </Fragment>
     </Router>
