@@ -67,7 +67,7 @@ const PuzzleFactory = () => {
             </Form.Control>
           </Col>
         </Form.Group>
-        <Button type='submit'>Submit</Button>
+        <Button type='submit' className="btn-primary-color">Submit</Button>
       </Form>
       <div className='mt-4'>
         { message.contents.map((msg, idx) => <Alert key={idx} variant={message.type}>{msg}</Alert>) }
