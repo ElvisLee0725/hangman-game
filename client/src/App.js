@@ -6,7 +6,7 @@ import TopScores from './components/layout/TopScores';
 import PuzzleFactory from './components/layout/PuzzleFactory';
 import Navigation from './components/layout/Navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NotFound from './components/404';
+import NotFound from './components/layout/404';
 
 const App = () => {
   
