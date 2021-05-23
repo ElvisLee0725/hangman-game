@@ -148,10 +148,6 @@ const Landing = () => {
     setGameStatus('pending');
   }
 
-  console.log('Total: ' + totalGuess.current);
-  console.log('Missied: ' + missedGuesses.length);
-  console.log('Status: ' + gameStatus);
-
   return (
     <Container>
       <Difficulty fetchQuestion={fetchQuestion} />
