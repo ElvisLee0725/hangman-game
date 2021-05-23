@@ -26,6 +26,8 @@ Try the application live at https://hangman.elvislee.com
 
 ## Preview
 
+![play-save-score](preview/play-save-score.gif)
+
 ## Development
 
 ### System Requirements
