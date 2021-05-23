@@ -127,7 +127,7 @@ const Landing = () => {
     }
 
     // Check if run out of guess
-    if(gameStatus === 'playing' && totalGuess - missedGuesses.length === 0) {
+    if(gameStatus === 'playing' && (totalGuess.current - missedGuesses.length === 0)) {
       setGameStatus('gameover');
       setMessage(`Sorry, the answer is '${puzzle.toUpperCase()}'. Let's play again!`);
     }
@@ -147,6 +147,10 @@ const Landing = () => {
     // Set game status to 'pending' when modal close. So it won't pop up before next game starts
     setGameStatus('pending');
   }
+
+  console.log('Total: ' + totalGuess.current);
+  console.log('Missied: ' + missedGuesses.length);
+  console.log('Status: ' + gameStatus);
 
   return (
     <Container>
